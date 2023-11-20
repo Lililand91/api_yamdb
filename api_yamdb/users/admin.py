@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.contrib.auth.admin import CustomUserAdmin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import CustomUser
 
-CustomUserAdmin.fieldsets += (
+UserAdmin.fieldsets += (
     ('Extra Fields', {'fields': ('bio', 'role',)}),
 )
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser, UserAdmin)

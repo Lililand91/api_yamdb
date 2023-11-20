@@ -20,8 +20,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('reviews/', include('reviews.urls')),
-    # урлы для отзывов
     path(
         'redoc/',
         TemplateView.as_view(template_name='redoc.html'),

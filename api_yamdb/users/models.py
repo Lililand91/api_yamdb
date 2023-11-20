@@ -18,4 +18,5 @@ class CustomUser(AbstractUser):
         max_length=50,
         blank=True,
         choices=CHOICES,
-        default='user')
+        default='user'
+    )
