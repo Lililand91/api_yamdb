@@ -2,6 +2,7 @@ from datetime import date
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 
 User = get_user_model()
@@ -37,7 +38,7 @@ class Title(models.Model):
     name = models.TextField('Название', max_length=256)
     yaer = models.DateTimeField('Год выпуска')
     description = models.TextField('Описание', blank=True)
-    genre = models.ManyToManyField(Genre, on_delete=models.SET_NULL,
+    genre = models.ManyToManyField(Genre,
                                    null=True, through='GenreTitle')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  null=True, related_name='categories')
@@ -85,7 +86,9 @@ class Review(models.Model):
     product = models.ForeignKey(
         Title, on_delete=models.CASCADE, related_name='reviews'
     )
-    score = models.IntegerField(max_length=10, min_length=1)
+    score = models.IntegerField(default=0,
+                                validators=[MaxValueValidator(10),
+                                            MinValueValidator(1)])
 
     def __str__(self):
         return self.text
