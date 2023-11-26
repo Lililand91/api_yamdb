@@ -1,9 +1,11 @@
 from datetime import date
+
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.exceptions import ValidationError
+from users.models import User
 
 User = get_user_model()
 
@@ -36,12 +38,11 @@ class Category(models.Model):
 
 class Title(models.Model):
     name = models.TextField('Название', max_length=256)
-    yaer = models.DateTimeField('Год выпуска')
+    year = models.IntegerField('Год выпуска', null=True)
     description = models.TextField('Описание', blank=True)
-    genre = models.ManyToManyField(Genre,
-                                   null=True, through='GenreTitle')
+    genre = models.ManyToManyField(Genre, through='GenreTitle')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 null=True, related_name='categories')
+                                 related_name='categories', null=True)
 
     class Meta:
         verbose_name = 'Произведение'
@@ -92,3 +93,16 @@ class Review(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='comments'
+    )
+    review = models.ForeignKey(
+        Review, on_delete=models.CASCADE, related_name='comments'
+    )
+    text = models.TextField()
+    created = models.DateTimeField(
+        'Дата добавления', auto_now_add=True, db_index=True
+    )

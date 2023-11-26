@@ -1,9 +1,17 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser
+from .models import User
 
-UserAdmin.fieldsets += (
-    ('Extra Fields', {'fields': ('bio', 'role',)}),
-)
-admin.site.register(CustomUser, UserAdmin)
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    fields = ("username", "email", "first_name", "last_name", "bio", "role")
+    list_display = (
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "bio",
+        "role",
+    )
+    list_editable = ("role",)
