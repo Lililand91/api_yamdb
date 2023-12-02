@@ -42,7 +42,7 @@ class Title(models.Model):
     description = models.TextField('Описание', blank=True)
     genre = models.ManyToManyField(Genre, through='GenreTitle')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 related_name='categories', null=True)
+                                 related_name='category', null=True)
 
     class Meta:
         verbose_name = 'Произведение'
